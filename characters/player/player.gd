@@ -22,7 +22,7 @@ var _dir := Vector2()
 @onready var _animation_state_machine: AnimationNodeStateMachinePlayback = _animation_tree.get("parameters/playback")
 @onready var facing: Facing = $Facing
 
-var reset_position: Vector2
+var reset_position := Vector2()
 
 func _ready() -> void:
 	on_enter()
@@ -39,10 +39,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		_apply_gravity(delta)
 		_state_chart.send_event("airborne")
-	
+
 	var move_blend = (velocity.x * facing.scale.x) / move_speed
 	var airborne_blend = velocity.y / move_speed
-	
+
 	# set the velocity to the animation tree, so it can blend between animations
 	_animation_tree["parameters/Move/blend_position"] = move_blend
 	_animation_tree["parameters/Move 1h/blend_position"] = move_blend
@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 func _on_jump_enabled_state_physics_processing(_delta: float) -> void:
 	if Input.is_action_just_pressed(actions.jump):
 		velocity.y = jump_force
-		_state_chart.send_event("jump") 
+		_state_chart.send_event("jump")
 
 func _on_double_jump_jump() -> void:
 	_animation_state_machine.travel("Double Jump")
@@ -79,7 +79,7 @@ func _on_mouselook_movement_state_physics_processing(_delta: float) -> void:
 	camera.position = target_position
 	if mouse_pos.x != facing.scale.x:
 		direction_changed.emit(mouse_pos.x)
-	
+
 	_dir = Input.get_vector(actions.left, actions.right, actions.up, actions.down)
 	var right := 1.0
 	var left := -1.0
@@ -98,7 +98,7 @@ func _on_mouselook_movement_state_physics_processing(_delta: float) -> void:
 		_:
 			_apply_friction()
 
-func _on_onehand_gun_state_input(event: InputEvent) -> void:
+func _on_onehand_gun_state_input(_event: InputEvent) -> void:
 	pass # Replace with function body.
 
 func kill():
@@ -115,7 +115,7 @@ func get_mouse_angle() -> float:
 	mouse_pos = get_global_mouse_position()
 	var rads =  pos.angle_to_point(mouse_pos)
 	#add 90 to the angle to rotate 0 degrees to up
-	var angle = rad_to_deg(rads) + 90 
+	var angle = rad_to_deg(rads) + 90
 	#converts degrees so positive degrees are right and negative are left
-	angle = fmod(angle + 180, 360) - 180 
+	angle = fmod(angle + 180, 360) - 180
 	return angle

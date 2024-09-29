@@ -30,6 +30,11 @@ window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 
+[editor]
+
+version_control/plugin_name="GitPlugin"
+version_control/autoload_on_startup=true
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/MetroidvaniaSystem/EditorExtension/plugin.cfg", "res://addons/MetroidvaniaSystem/plugin.cfg", "res://addons/SimpleTODO/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/net.yarvis.pixel_pen/plugin.cfg", "res://addons/parallax2d_preview/plugin.cfg")

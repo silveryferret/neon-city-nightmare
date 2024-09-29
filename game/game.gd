@@ -29,7 +29,7 @@ func _ready() -> void:
 	MetSys.reset_state()
 	# Assign player for MetSysGame.
 	set_player(%Player)
-	
+
 	if FileAccess.file_exists(SAVE_PATH):
 		# If save data exists, load it using MetSys SaveManager.
 		var save_manager := SaveManager.new()
@@ -39,7 +39,7 @@ func _ready() -> void:
 		generated_rooms.assign(save_manager.get_value("generated_rooms"))
 		events.assign(save_manager.get_value("events"))
 		player.abilities.assign(save_manager.get_value("abilities"))
-		
+
 		if not custom_run:
 			var loaded_starting_map: String = save_manager.get_value("current_room")
 			if not loaded_starting_map.is_empty(): # Some compatibility problem.
@@ -47,17 +47,17 @@ func _ready() -> void:
 	else:
 		# If no data exists, set empty one.
 		MetSys.set_save_data()
-	
+
 	# Initialize room when it changes.
 	room_loaded.connect(init_room, CONNECT_DEFERRED)
 	# Load the starting room.
 	load_room(starting_map)
-	
+
 	# Find the save point and teleport the player to it, to start at the save point.
 	var start := map.get_node_or_null(^"SavePoint")
 	if start and not custom_run:
 		player.position = start.position
-	
+
 	# Reset position tracking (feature specific to this project).
 	reset_map_starting_coords.call_deferred()
 	# Add module for room transitions.

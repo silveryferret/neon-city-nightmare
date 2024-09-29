@@ -36,12 +36,12 @@ func _on_option_button_item_selected(index: int) -> void:
 			state = "melee"
 			state_chart.set_expression_property("hand_state", "melee")
 			state_chart.send_event("equip melee")
-		2: 
+		2:
 			state = "1h"
 			state_chart.set_expression_property("hand_state", "1h")
 			state_chart.send_event("equip_1h")
 
-		3: 
+		3:
 			state = "2h"
 			state_chart.set_expression_property("hand_state", "2h")
 			state_chart.send_event("equip_2h")
