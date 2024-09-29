@@ -1,0 +1,237 @@
+[gd_scene load_steps=12 format=3 uid="uid://bbeb2q1oaqcmg"]
+
+[ext_resource type="Script" path="res://game/game.gd" id="1_6bqd2"]
+[ext_resource type="PackedScene" uid="uid://c25v5o4767sgk" path="res://characters/player/player.tscn" id="2_7solr"]
+[ext_resource type="Theme" uid="uid://dqqj12btuonf" path="res://game/scenes/cyberpunk theme.tres" id="3_kf1oh"]
+[ext_resource type="PackedScene" uid="uid://dch8dyylb7526" path="res://addons/MetroidvaniaSystem/Template/Nodes/Minimap.tscn" id="3_mikvg"]
+[ext_resource type="Texture2D" uid="uid://dnxnujaikii2s" path="res://assets/world/scanlines.png" id="4_h30me"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="6_jsga3"]
+[ext_resource type="Texture2D" uid="uid://buuaocb6haf15" path="res://assets/world/bottom decoration.png" id="6_xo5sw"]
+[ext_resource type="PackedScene" uid="uid://dpyguh5oxxxqr" path="res://game/debugpanel.tscn" id="7_lu3cp"]
+[ext_resource type="PackedScene" uid="uid://cps4iynncc22v" path="res://characters/camera.tscn" id="8_5uf1w"]
+
+[sub_resource type="GDScript" id="GDScript_vhu0f"]
+resource_name = "map_window"
+script/source = "# The window that contains a bigger map overview than minimap. Toggled with M.
+extends Panel
+
+# The size of the window in cells.
+var SIZE: Vector2i
+
+# The position where the player started (for the vector feature).
+var starting_coords: Vector2i
+# The offset for drawing the cells. Allows map panning.
+var offset: Vector2i
+# The player location node from MetSys.add_player_location()
+var player_location: Node2D
+# The vector feature, toggled with D. It displays an arrow from player's starting point to the current position.
+# It's purely to show custom drawing on the map.
+var show_delta: bool
+
+func _ready() -> void:
+	# Cellular size is total size divided by cell size.
+	SIZE = size / MetSys.CELL_SIZE
+	# Connect some signals.
+	MetSys.cell_changed.connect(queue_redraw.unbind(1))
+	MetSys.cell_changed.connect(update_offset.unbind(1)) # When player moves to another cell, move the map.
+	MetSys.map_updated.connect(queue_redraw)
+	# Create player location. We need a reference to update its offset.
+	player_location = MetSys.add_player_location(self)
+
+func _draw() -> void:
+	for x in SIZE.x:
+		for y in SIZE.y:
+			# Draw cells. Note how offset is used.
+			MetSys.draw_cell(self, Vector2i(x, y), Vector3i(x - offset.x, y - offset.y, MetSys.current_layer))
+	# Draw shared borders and custom elements.
+	if MetSys.settings.theme.use_shared_borders:
+		MetSys.draw_shared_borders()
+	MetSys.draw_custom_elements(self, Rect2i(-offset.x, -offset.y, SIZE.x, SIZE.y))
+	# Get the current player coordinates.
+	var coords := MetSys.get_current_flat_coords()
+	# If the delta vector (D) is enabled and player isn't on the starting position...
+	if show_delta and coords != starting_coords:
+		var start_pos := MetSys.get_cell_position(starting_coords + offset)
+		var current_pos := MetSys.get_cell_position(coords + offset)
+		# draw the vector...
+		draw_line(start_pos, current_pos, Color.WHITE, 2)
+		
+		const arrow_size = 4
+		# and arrow. This code shows how to draw custom stuff on the map outside the MetSys functions.
+		draw_set_transform(current_pos, start_pos.angle_to_point(current_pos), Vector2.ONE)
+		draw_primitive([Vector2(-arrow_size, -arrow_size), Vector2(arrow_size, 0), Vector2(-arrow_size, arrow_size)], [Color.WHITE], [])
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed:
+			# Toggle visibility when pressing M.
+			if event.keycode == KEY_M:
+				visible = not visible
+				if visible:
+					update_offset()
+			elif event.keycode == KEY_D:
+				# D toggles position tracking (delta vector).
+				show_delta = not show_delta
+				queue_redraw()
+
+func update_offset():
+	# Update the map offset based on the current position.
+	# Normally the offset is interactive and the player is able to move freely around the map.
+	# But in this demo, the map can overlay the game and thus is updated in real time.
+	offset = -MetSys.get_current_flat_coords() + SIZE / 2
+	player_location.offset = Vector2(offset) * MetSys.CELL_SIZE
+
+func reset_starting_coords():
+	# Starting position for the delta vector.
+	var coords := MetSys.get_current_flat_coords()
+	starting_coords = Vector2i(coords.x, coords.y)
+	queue_redraw()
+"
+
+[sub_resource type="GDScript" id="GDScript_fmfew"]
+resource_name = "percent_label"
+script/source = "# Displays map completion percentage
+extends Label
+
+func _ready() -> void:
+	# The percentage may change when map is updated.
+	MetSys.map_updated.connect(update)
+
+func _notification(what: int) -> void:
+	# Update when the label is made visible. This happens when the map is toggled.
+	if what == NOTIFICATION_VISIBILITY_CHANGED:
+		update()
+
+func update():
+	# Only update when visible.
+	if is_visible_in_tree():
+		# Show the percentage.
+		text = \"%03d%%\" % int(MetSys.get_explored_ratio() * 100)
+"
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_6bqd2")
+starting_map = "res://game/map/debug_main_room.tscn"
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="StateChartDebugger" parent="UI" instance=ExtResource("6_jsga3")]
+offset_left = 9.0
+offset_top = 11.0
+offset_right = -847.0
+offset_bottom = -151.0
+initial_node_to_watch = NodePath("../../Player")
+
+[node name="Map" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Scanlines" type="TextureRect" parent="UI/Map"]
+visible = false
+modulate = Color(0, 0.633333, 1, 1)
+clip_contents = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1124.0
+offset_top = 16.0
+offset_right = 1224.0
+offset_bottom = 116.0
+grow_horizontal = 0
+texture = ExtResource("4_h30me")
+stretch_mode = 1
+
+[node name="Bottom dots" type="TextureRect" parent="UI/Map"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1124.0
+offset_top = 103.0
+offset_right = 1224.0
+offset_bottom = 116.0
+grow_horizontal = 0
+texture = ExtResource("6_xo5sw")
+
+[node name="Panel" type="Panel" parent="UI/Map"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1021.0
+offset_top = 17.0
+offset_right = 1092.0
+offset_bottom = 94.0
+grow_horizontal = 0
+theme = ExtResource("3_kf1oh")
+
+[node name="ColorRect2" type="ColorRect" parent="UI/Map/Panel"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 2.0
+offset_right = 72.0
+offset_bottom = 74.0
+color = Color(0.996078, 0.67451, 0.27451, 1)
+
+[node name="Minimap" parent="UI/Map/Panel" instance=ExtResource("3_mikvg")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.799
+anchor_top = 0.049
+anchor_right = 0.972
+anchor_bottom = 0.358
+offset_left = -53.136
+offset_top = -1.528
+offset_right = 2.792
+offset_bottom = 50.224
+grow_horizontal = 0
+display_player_location = true
+
+[node name="MapWindow" type="Panel" parent="UI/Map"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 470.0
+offset_top = 240.0
+offset_right = 770.0
+offset_bottom = 440.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_kf1oh")
+script = SubResource("GDScript_vhu0f")
+
+[node name="Label" type="Label" parent="UI/Map/MapWindow"]
+layout_mode = 0
+offset_left = 4.0
+offset_right = 44.0
+offset_bottom = 26.0
+text = "0%"
+script = SubResource("GDScript_fmfew")
+
+[node name="Debug Panel" parent="UI" node_paths=PackedStringArray("character") instance=ExtResource("7_lu3cp")]
+offset_left = 774.0
+offset_top = 7.0
+offset_right = -125.0
+offset_bottom = -401.0
+character = NodePath("../../Player")
+
+[node name="Player" parent="." instance=ExtResource("2_7solr")]
+unique_name_in_owner = true
+position = Vector2(578, 240)
+velocity = Vector2(0, 10649.3)
+mouselook = false
+hand_state = "unarmed"
+
+[node name="Camera2D" parent="." instance=ExtResource("8_5uf1w")]
+unique_name_in_owner = true
+position = Vector2(320, 178)
+zoom = Vector2(2, 2)

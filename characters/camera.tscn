@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://cps4iynncc22v"]
+
+[node name="Camera2D" type="Camera2D"]
+process_callback = 0

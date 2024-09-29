@@ -1,0 +1,126 @@
+[gd_resource type="Theme" load_steps=20 format=3 uid="uid://dqqj12btuonf"]
+
+[ext_resource type="Texture2D" uid="uid://dhv8evq0pcihm" path="res://assets/user interface/buttons/button red disabled.png" id="1_pxf3k"]
+[ext_resource type="Texture2D" uid="uid://b1f55ca06l671" path="res://assets/user interface/buttons/button red active.png" id="2_wsr5j"]
+[ext_resource type="Texture2D" uid="uid://4wyu2kmn0dwq" path="res://assets/user interface/buttons/button red hover.png" id="3_x85sh"]
+[ext_resource type="Texture2D" uid="uid://bt5rwrmrkvlk3" path="res://assets/user interface/buttons/button dark grey active.png" id="4_f062i"]
+[ext_resource type="Texture2D" uid="uid://cxtndasp8o07a" path="res://assets/user interface/buttons/button grey active.png" id="5_c3w7v"]
+[ext_resource type="FontFile" uid="uid://b8pvp01vk5iuu" path="res://assets/user interface/fonts/CyberpunkCraftpixPixel.otf" id="6_4pjra"]
+[ext_resource type="FontFile" uid="uid://cpdutf7iwpqd3" path="res://assets/user interface/fonts/Pixel Grafiti Straight.otf" id="7_wo2xe"]
+[ext_resource type="FontFile" uid="uid://ysu8c7v8p764" path="res://assets/user interface/fonts/Pixel Grafiti Slanted.otf" id="8_fb5yl"]
+[ext_resource type="Texture2D" uid="uid://ctxdu4d38gukg" path="res://assets/user interface/buttons/frames.png" id="9_arptr"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2bv07"]
+texture = ExtResource("1_pxf3k")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(2, 2, 12, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_prpth"]
+texture = ExtResource("2_wsr5j")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+region_rect = Rect2(0, 0, 16, 16)
+draw_center = false
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1efr6"]
+texture = ExtResource("3_x85sh")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(2, 2, 12, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p2yax"]
+texture = ExtResource("2_wsr5j")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(2, 2, 12, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0xnhx"]
+texture = ExtResource("1_pxf3k")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(2, 2, 12, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xwjvj"]
+texture = ExtResource("4_f062i")
+texture_margin_left = 2.0
+texture_margin_top = 3.0
+texture_margin_right = 2.0
+texture_margin_bottom = 1.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(2, 2, 12, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_15dfd"]
+texture = ExtResource("4_f062i")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 4.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(2, 2, 12, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ilup2"]
+texture = ExtResource("5_c3w7v")
+texture_margin_left = 2.0
+texture_margin_top = 3.0
+texture_margin_right = 2.0
+texture_margin_bottom = 1.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(2, 2, 12, 12)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_os4ol"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_besrh"]
+texture = ExtResource("9_arptr")
+texture_margin_left = 13.0
+texture_margin_top = 34.0
+texture_margin_right = 13.0
+texture_margin_bottom = 34.0
+expand_margin_left = 14.0
+expand_margin_top = 12.0
+expand_margin_right = 14.0
+expand_margin_bottom = 12.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 96, 96)
+
+[resource]
+default_base_scale = 0.5
+default_font = ExtResource("6_4pjra")
+default_font_size = 19
+Button/styles/disabled = SubResource("StyleBoxTexture_2bv07")
+Button/styles/focus = SubResource("StyleBoxTexture_prpth")
+Button/styles/hover = SubResource("StyleBoxTexture_1efr6")
+Button/styles/hover_pressed = null
+Button/styles/normal = SubResource("StyleBoxTexture_p2yax")
+Button/styles/pressed = SubResource("StyleBoxTexture_0xnhx")
+CheckBox/styles/disabled = SubResource("StyleBoxTexture_xwjvj")
+CheckBox/styles/normal = SubResource("StyleBoxTexture_15dfd")
+CheckBox/styles/pressed = SubResource("StyleBoxTexture_ilup2")
+FlatButton/styles/disabled = SubResource("StyleBoxTexture_os4ol")
+Panel/fonts/Cyberpunk = ExtResource("6_4pjra")
+Panel/fonts/Cyberpunk_Squared = ExtResource("6_4pjra")
+Panel/fonts/Grafiti_Straight = ExtResource("7_wo2xe")
+Panel/fonts/Graftit_Slant = ExtResource("8_fb5yl")
+Panel/styles/panel = SubResource("StyleBoxTexture_besrh")

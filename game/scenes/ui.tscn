@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://dery7s2u4euxx"]
+
+[ext_resource type="Theme" uid="uid://dqqj12btuonf" path="res://game/scenes/cyberpunk theme.tres" id="1_dv58o"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 29.0
+offset_right = 294.0
+offset_bottom = 167.0
+theme = ExtResource("1_dv58o")
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 16.0
+offset_right = 170.0
+offset_bottom = 104.0
+text = "thin"

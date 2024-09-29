@@ -1,0 +1,119 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpyguh5oxxxqr"]
+
+[ext_resource type="Script" path="res://game/debugpanel.gd" id="1_invfa"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_sadhw"]
+font_size = 30
+
+[node name="Debug Panel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_invfa")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer2"]
+layout_mode = 2
+text = "Debug
+"
+label_settings = SubResource("LabelSettings_sadhw")
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Velocity Label" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Velocity: "
+
+[node name="Camera Pos" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Camera Position:"
+
+[node name="Mouse Position" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mouse Position:"
+
+[node name="Mouse Angle" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Angle to Mouse:"
+
+[node name="Mouselook Label" type="Button" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Toggle Mouselook"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="velocity vec" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="camera_pos" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="mouse_pos" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="mouse_angle" type="Label" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+
+[node name="mouselook" type="CheckBox" parent="Panel/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+action_mode = 0
+
+[node name="Button" type="Button" parent="Panel/VBoxContainer2"]
+layout_mode = 2
+focus_mode = 0
+text = "Hide"
+
+[node name="OptionButton" type="OptionButton" parent="Panel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 237.0
+offset_right = 44.0
+offset_bottom = 257.0
+focus_mode = 0
+selected = 0
+item_count = 4
+popup/item_0/text = "Unarmed"
+popup/item_1/text = "Melee"
+popup/item_1/id = 1
+popup/item_2/text = "One Handed"
+popup/item_2/id = 2
+popup/item_3/text = "Two Handed"
+popup/item_3/id = 3
+
+[connection signal="pressed" from="Panel/VBoxContainer2/HBoxContainer/VBoxContainer/Mouselook Label" to="." method="_on_mouselook_pressed"]
+[connection signal="item_selected" from="Panel/OptionButton" to="." method="_on_option_button_item_selected"]
